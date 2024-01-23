@@ -29,7 +29,7 @@ def skymap(fig, tdes):
             }
 
     for t in tdes:
-        coords = t['coordinate']['equitorial']
+        coords = t['coordinate']
         defaultcoord = None
         for c in coords:
             if 'default' in c and c['default']:
@@ -73,14 +73,19 @@ def skymap(fig, tdes):
                                 hovertext=info['TDE Name'],
                                 hovertemplate="<b>Name</b>: %{hovertext}<br>" +
                                               "<b>RA</b>: %{lon}<br>" +
-                                              "<b>Dec</b>: %{lat}" +
+                                              "<b>Dec</b>: %{lat}<br>" +
                                               "<extra></extra>",
+                                text=[f"""<a href="./{name}" style="color:transparent">{name}</a>""" for name in info['TDE Name']],
+                                textposition='middle center',
+                                #textfont={"color":"transparent"},
                                 showlegend=False,
                                 marker=dict(color=np.log10(info['Z']),
                                             colorbar=dict(thickness=20,
                                                           title='log(z)'),
-                                            colorscale="Thermal"
-                                            )
+                                            colorscale="Thermal",
+                                            size=10
+                                            ),
+                                mode='markers+text'
                                 ),
                   row=1, col=2)
         
@@ -118,10 +123,10 @@ def plotCatalogSummary(tdes):
     fig.update_yaxes(title_text="Number of TDEs", row=1, col=1)
     
     #fig.update_layout(title = {'text':f'Number of TDEs: {len(tdes)}'})
-    
+
     fig = skymap(fig, tdes)
     fig = redshifts(fig, tdes)
-
+    
     return to_html(fig, full_html=False,
                        default_width='100%',
                        default_height='500px')

@@ -177,8 +177,8 @@
 	    {% else %}
 	    <td></td>
 	    {% endif %}
-	    {% if tde['epoch/date_discovery'] is defined %}
-	    <td>{{ tde['epoch/date_discovery'][0]['value'] }}</td>
+	    {% if tde.getDiscoveryDate() is defined %}
+	    <td>{{ tde.getDiscoveryDate().to_value('datetime') }}</td>
 	    {% else %}
 	    <td></td>
 	    {% endif %}
